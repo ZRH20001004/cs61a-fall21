@@ -45,7 +45,22 @@ def picky_piggy(score):
     score:  The opponent's current score.
     """
     # BEGIN PROBLEM 2
-    "*** YOUR CODE HERE ***"
+    my_score = 0
+    if score % 6 == 1:
+        my_score = 1
+    elif score % 6 == 2:
+        my_score = 4
+    elif score % 6 == 3:
+        my_score = 2
+    elif score % 6 == 4:
+        my_score = 8
+    elif score % 6 == 5:
+        my_score = 5
+    else:
+        my_score = 7
+    return my_score
+
+
     # END PROBLEM 2
 
 
@@ -65,7 +80,14 @@ def take_turn(num_rolls, opponent_score, dice=six_sided, goal=GOAL_SCORE):
     assert num_rolls <= 10, 'Cannot roll more than 10 dice.'
     assert opponent_score < goal, 'The game should be over.'
     # BEGIN PROBLEM 3
-    "*** YOUR CODE HERE ***"
+    cur_score = 0
+    if num_rolls == 0:
+        cur_score = picky_piggy(opponent_score)
+    else:
+        cur_score = roll_dice(num_rolls,dice)
+    return cur_score
+
+
     # END PROBLEM 3
 
 
@@ -76,7 +98,10 @@ def hog_pile(player_score, opponent_score):
     opponent_score: The total score of the other player.
     """
     # BEGIN PROBLEM 4
-    "*** YOUR CODE HERE ***"
+    add_score = 0
+    if player_score == opponent_score:
+        add_score = player_score
+    return add_score
     # END PROBLEM 4
 
 
@@ -115,7 +140,16 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
     """
     who = 0  # Who is about to take a turn, 0 (first) or 1 (second)
     # BEGIN PROBLEM 5
-    "*** YOUR CODE HERE ***"
+    while score0 < goal and score1 < goal:
+        if who == 0:
+            s0 = strategy0(score0,score1)
+            score0 = score0 + take_turn(s0,score1,dice,goal) 
+            score0 = score0 + hog_pile(score0,score1)
+        else:
+            s1 = strategy1(score1,score0)
+            score1 = score1 + take_turn(s1,score0,dice,goal) 
+            score1 = score1 + hog_pile(score1,score0)
+        who = next_player(who)
     # END PROBLEM 5
     # (note that the indentation for the problem 6 prompt (***YOUR CODE HERE***) might be misleading)
     # BEGIN PROBLEM 6
