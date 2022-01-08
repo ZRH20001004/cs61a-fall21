@@ -25,7 +25,14 @@ def unique_digits(n):
     >>> unique_digits(10) # 0 and 1
     2
     """
-    "*** YOUR CODE HERE ***"
+    count = 0
+    i = 0
+    while i < 10:
+        if has_digit(n,i):
+            count += 1
+        i += 1
+    return count
+    
 
 
 def has_digit(n, k):
@@ -35,7 +42,14 @@ def has_digit(n, k):
     >>> has_digit(12, 7)
     False
     """
-    "*** YOUR CODE HERE ***"
+    while n > 0:
+        d = n % 10
+        if k == d:
+            return True
+        n = n // 10
+    return False
+
+
 
 
 def ordered_digits(x):
@@ -57,7 +71,14 @@ def ordered_digits(x):
     False
 
     """
-    "*** YOUR CODE HERE ***"
+    prev,cur = 10,10
+    while x > 0:
+        cur = x % 10
+        if prev < cur:
+            return False
+        prev = cur
+        x = x // 10
+    return True
 
 
 def get_k_run_starter(n, k):
@@ -105,8 +126,13 @@ def make_repeater(func, n):
     >>> make_repeater(square, 0)(5) # Yes, it makes sense to apply the function zero times!
     5
     """
-    "*** YOUR CODE HERE ***"
-
+    def add(x):
+        i = 0
+        while i < n:
+            x = func(x)
+            i += 1
+        return x
+    return add
 
 def composer(func1, func2):
     """Return a function f, such that f(x) = func1(func2(x))."""
@@ -123,7 +149,8 @@ def apply_twice(func):
     >>> apply_twice(square)(2)
     16
     """
-    "*** YOUR CODE HERE ***"
+    return make_repeater(func,2)
+    
 
 
 def protected_secret(password, secret, num_attempts):
@@ -144,6 +171,16 @@ def protected_secret(password, secret, num_attempts):
     >>> my_secret = my_secret("correcthorsebatterystaple")
     SECRET LOCKED
     """
+
     def get_secret(password_attempt):
-        "*** YOUR CODE HERE ***"
+        if num_attempts <= 0:
+            print("SECRET LOCKED")
+            return protected_secret(password,secret,num_attempts)
+        elif password_attempt == password:
+            print(secret)
+            return protected_secret(password,secret,num_attempts)
+        else:
+            print("INCORRECT PASSWORD")
+            return protected_secret(password,secret,num_attempts - 1)
+
     return get_secret
