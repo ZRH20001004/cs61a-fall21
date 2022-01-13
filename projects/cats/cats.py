@@ -147,7 +147,17 @@ def autocorrect(typed_word, valid_words, diff_function, limit):
     'testing'
     """
     # BEGIN PROBLEM 5
-    "*** YOUR CODE HERE ***"
+    if typed_word in valid_words:
+        return typed_word
+    else:
+        squences = [[typed_word,valid_words[i]] for i in range(len(valid_words))]
+        s = min(squences,key=lambda squence:diff_function(squence[0],squence[1],limit))
+        if diff_function(s[0],s[1],limit) > limit:
+            return typed_word
+        else:
+            return s[1]
+
+
     # END PROBLEM 5
 
 
@@ -174,7 +184,19 @@ def feline_flips(start, goal, limit):
     5
     """
     # BEGIN PROBLEM 6
-    assert False, 'Remove this line'
+    ab = abs(len(goal) - len(start))
+    return ab + helper(start,goal,limit - ab + 1)
+
+def helper(start, goal, limit):
+    if limit == 0:
+        return 1
+    if len(start) == 0 or len(goal) == 0:
+        return 0
+    else:
+        if start[0] != goal[0]:
+            return 1 + helper(start[1:],goal[1:],limit - 1)
+        else:
+            return helper(start[1:],goal[1:],limit)
     # END PROBLEM 6
 
 
@@ -195,25 +217,28 @@ def minimum_mewtations(start, goal, limit):
     >>> minimum_mewtations("ckiteus", "kittens", big_limit) # ckiteus -> kiteus -> kitteus -> kittens
     3
     """
-    assert False, 'Remove this line'
 
-    if ______________:  # Fill in the condition
+    if limit == -1:  # Fill in the condition
         # BEGIN
-        "*** YOUR CODE HERE ***"
+        return 0
         # END
 
-    elif ___________:  # Feel free to remove or add additional cases
+    elif len(start) == 0 or len(goal) == 0:  # Feel free to remove or add additional cases
         # BEGIN
-        "*** YOUR CODE HERE ***"
+        return max(len(start),len(goal))
         # END
+
+    elif start[0] == goal[0]:
+        return minimum_mewtations(start[1:],goal[1:],limit)
 
     else:
-        add = ...  # Fill in these lines
-        remove = ...
-        substitute = ...
         # BEGIN
-        "*** YOUR CODE HERE ***"
+        add = minimum_mewtations(start,goal[1:],limit - 1) + 1
+        remove = minimum_mewtations(start[1:],goal,limit - 1) + 1
+        substitute = minimum_mewtations(start[1:],goal[1:],limit - 1) + 1
+        return min(add,remove,substitute)
         # END
+        
 
 
 def final_diff(start, goal, limit):
