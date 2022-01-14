@@ -335,14 +335,14 @@ def fastest_words(match):
     word_indices = range(len(get_words(match)))    # contains an *index* for each word
     # BEGIN PROBLEM 10
     fastest = [[] for _ in player_indices]
-    for word_index in word_indices:
-        min_time = float('inf')
+    for word_indice in word_indices:
+        min = float('inf')
         player = 0
-        for player_index in player_indices:
-            if time(match, player_index, word_index) < min_time:
-                min_time = time(match, player_index, word_index)
-                player = player_index
-        fastest[player].append(word_at(match, word_index))
+        for player_indice in player_indices:
+            if time(match,player_indice,word_indice) < min:
+                min = time(match,player_indice,word_indice)
+                player = player_indice
+        fastest[player].append(word_at(match,word_indice))
     return fastest
     # END PROBLEM 10
 
